@@ -14,6 +14,10 @@ const BMI=()=>{
       <TextInput placeholder="請輸入身高(公分)" keyboardType="numeric" style={styles.inputStyle} />
       
       <TextInput placeholder="請輸入體重(公斤)" keyboardType="numeric" style={styles.inputStyle} />
+      <Text>
+      Let's go, take a fruit journey {'\n'}
+      Visitors can taste the fresh fruits of the season in Taiwan and experience the fun of fruit picking. Let us visit the gardens all over Taiwan.
+      </Text>
     </View>
     <View style={styles.buttomBlock}>
     <Image source={require('./assets/fruit2/12.jpg')} />
