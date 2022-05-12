@@ -1,19 +1,23 @@
 //0512 TextInput
 
 import React from "react";
-import { Text,View,TextInput,StyleSheet } from "react-native";
+import { Text,View,TextInput,StyleSheet,Image } from "react-native";
 
 const BMI=()=>{
   return(
     <View style={styles.container}>
-      <View style={styles.topBlock}></View>
+      <View style={styles.topBlock}>
+        <Image source={require('./assets/fruit2/7.jpg')} />
+      </View>
       <View style={styles.middleBlock}>
       <Text>身體質量指數BMI</Text>
       <TextInput placeholder="請輸入身高(公分)" keyboardType="numeric" style={styles.inputStyle} />
       
       <TextInput placeholder="請輸入體重(公斤)" keyboardType="numeric" style={styles.inputStyle} />
     </View>
-    <View style={styles.buttomBlock}></View>
+    <View style={styles.buttomBlock}>
+    <Image source={require('./assets/fruit2/12.jpg')} />
+    </View>
     </View>
 
   );
