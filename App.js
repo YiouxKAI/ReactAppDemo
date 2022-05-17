@@ -1,30 +1,100 @@
-//0512 TextInput
+//0517 Layout - 以Row
+import { Text,View,StyleSheet } from "react-native";
 
-import React from "react";
-import { Text,View,TextInput,StyleSheet,Image } from "react-native";
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
+});
 
-const BMI=()=>{
+const App=()=>{
   return(
-    <View style={styles.container}>
-      <View style={styles.topBlock}>
-        <Image source={require('./assets/fruit2/7.jpg')} />
+    <View style={{flexDirection:'row',flex:1}}>
+      <View style={[{flex:0.25,backgroundColor:'#6699A1'},styles.container]}>
+      <Text>Left</Text>
       </View>
-      <View style={styles.middleBlock}>
-      <Text>身體質量指數BMI</Text>
-      <TextInput placeholder="請輸入身高(公分)" keyboardType="numeric" style={styles.inputStyle} />
-      
-      <TextInput placeholder="請輸入體重(公斤)" keyboardType="numeric" style={styles.inputStyle} />
-      <Text>
-      Let's go, take a fruit journey {'\n'}
-      Visitors can taste the fresh fruits of the season in Taiwan and experience the fun of fruit picking. Let us visit the gardens all over Taiwan.
-      </Text>
+      <View style={[{flex:0.5,backgroundColor:'#A5DEE4'},styles.container]}>
+      <Text>Middle</Text>
+      </View>
+      <View style={[{flex:0.25,backgroundColor:'#6699A1'},styles.container]}>
+      <Text>Right</Text>
+      </View>
     </View>
-    <View style={styles.buttomBlock}>
-    <Image source={require('./assets/fruit2/12.jpg')} />
-    </View>
-    </View>
-
   );
+}
+
+
+
+export default App;
+
+//0512 TextInput,StyleSheet,Image,Button,Alert
+/*import React from "react";
+import { Text,View,TextInput,StyleSheet,Image,Button,Alert } from "react-native";
+import { backgroundColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
+
+
+export default class BMI extends React.Component {
+  state={
+    height:0,
+    weight:0,
+    result:0,
+    warnning:'',
+  }
+
+  handleBMI=()=>{
+    let bmi=this.state.weight/((this.state.height/100)**2);
+    let str='';
+
+    this.setState({result:bmi.toFixed(1)});
+
+    if(bmi < 18.5){
+      str='過輕';
+    }
+    else if(bmi < 24){
+      str='正常';
+    }else if(bmi < 27){
+      str='過重';
+    }else if(bmi < 30){
+      str='輕度肥胖';
+    }else if(bmi < 35){
+      str='中度肥胖';
+    }else{  
+      str='重度肥胖';
+    }
+
+    this.setState({warnning:str});
+  }
+
+  render(){
+    return(
+      <View style={styles.container}>
+        <View style={styles.topBlock}>
+          <Image style={styles.imgStyle} source={require('./assets/fruit2/7.jpg')} />
+        </View>
+        <View style={styles.middleBlock}>
+        <Text>身體質量指數BMI</Text>
+        <TextInput placeholder="請輸入身高(公分)" keyboardType="numeric" style={styles.inputStyle} onChangeText={height=>{this.setState({height})}}/>
+        
+        <TextInput placeholder="請輸入體重(公斤)" keyboardType="numeric" style={styles.inputStyle} onChangeText={weight=>{this.setState({weight})}} />
+        <Text>
+        Let's go, take a fruit journey {'\n'}
+        Visitors can taste the fresh fruits of the season in Taiwan and experience the fun of fruit picking. Let us visit the gardens all over Taiwan.
+        </Text>
+        <Button title="ALOHA" color='#465D4C' onPress={()=>Alert.alert('請注意健康')}></Button> 
+        <Button title="CALC" color='#91B493' onPress={this.handleBMI}></Button> 
+
+        <Text style={styles.txtStyle}>BMI:{this.state.result}</Text>
+        <Text style={styles.txtStyle}>警語:{this.state.warnning}</Text>
+      {///*Alert調用一定要用arrow function***///}
+      /*</View>
+      <View style={styles.buttomBlock}>
+      <Image source={require('./assets/fruit2/12.jpg')} />
+      </View>
+      </View>
+
+    )
+  }
 }
 
 const styles = StyleSheet.create({
@@ -33,11 +103,14 @@ const styles = StyleSheet.create({
         flex: 1,
       },
       topBlock:{
-        flex:0.25
+        flex:0.25,
+        justifyContent:'center',
+        alignItems:'center',
+        backgroundColor:'#808F7C'
       },
       middleBlock:{
         flex:0.5,
-        backgroundColor: '#B4A582',
+        backgroundColor: '#6A8372',
         paddingTop: 50,
         paddingHorizontal: 15,
       },
@@ -51,10 +124,26 @@ const styles = StyleSheet.create({
         borderRadius:5,
         height:40,
         paddingHorizontal:10
+      },
+      imgStyle:{
+        width:100,
+        height:100,
+        borderRadius:50,
+        borderWidth:3,
+        borderStyle:'solid',
+        borderColor:'#877F6C'
+      },
+      txtStyle:{
+        textAlign:'center',
+        marginVertical:10,
+        backgroundColor:'#465D4C',
+        height:30,
+        color:'#fff',
+        lineHeight:30,
       }
-  });
+  });*/
 
-export default BMI;
+//export default BMI;
 
 
   
@@ -101,7 +190,7 @@ export default BMI;
 // });
 
 
-//0510
+//0510 state:屬性 setState:方法
 // export default class App extends React.Component{
 //   state={
 //     fruit:"夏季的水果是茫果，別吃太多，會ㄎ一ㄤ",
