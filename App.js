@@ -1,5 +1,56 @@
-//0517 Layout - 以Row
-import { Text,View,StyleSheet } from "react-native";
+//0517 - 
+
+import React,{ useState } from 'react';
+import { Text,View,StyleSheet,TouchableHighlight,TouchableOpacity } from "react-native";
+
+const styles = StyleSheet.create({
+  content:{
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor:'#6699A1',
+    marginHorizontal:5,
+    height:50,
+    lineHeight:50,
+  },
+  topContent:{
+    alignItems:'center',
+    marginVertical:50,
+  }
+});
+
+const App=()=>{
+  const [count,setCount]=useState(0);
+  const addUp=()=>{
+    setCount(count+1)
+  };
+  const substract=()=>{
+    setCount(count-1)
+  };
+
+
+  return(
+    <View style={{flexDirection:'column',flex:1,justifyContent:'space-around',alignItems:'center'}}>
+      <View style={styles.topContent}>
+        <Text>增減結果</Text>
+        <Text>{count}</Text>
+      </View>
+
+      <View style={{flexDirection:'row',flex:1}}>
+        <TouchableHighlight style={[{flex:0.5,width:'100%'},styles.content]} onPress={addUp}>
+          <Text>增1</Text>
+        </TouchableHighlight>
+        <TouchableOpacity style={[{flex:0.5,width:'100%'},styles.content]} onPress={substract}>
+          <Text>減1</Text>
+        </TouchableOpacity>
+      </View>  
+    </View>
+  );
+}
+
+export default App;
+
+//0517 
+/*import { Text,View,StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
@@ -10,15 +61,44 @@ const styles = StyleSheet.create({
 
 const App=()=>{
   return(
-    <View style={{flexDirection:'row',flex:1}}>
-      <View style={[{flex:0.25,backgroundColor:'#6699A1'},styles.container]}>
+    <View style={{flexDirection:'column',flex:1,justifyContent:'space-around',alignItems:'center'}}>
+      <View style={[{height:100,width:100,backgroundColor:'#6699A1'},styles.container]}>
       <Text>Left</Text>
       </View>
-      <View style={[{flex:0.5,backgroundColor:'#A5DEE4'},styles.container]}>
+      <View style={[{height:50,width:100,backgroundColor:'#A5DEE4'},styles.container]}>
       <Text>Middle</Text>
       </View>
-      <View style={[{flex:0.25,backgroundColor:'#6699A1'},styles.container]}>
+      <View style={[{height:100,width:100,backgroundColor:'#6699A1'},styles.container]}>
       <Text>Right</Text>
+      </View>
+    </View>
+  );
+}
+
+export default App;*/
+
+
+//0517 Layout - 以Column做版面
+/*import { Text,View,StyleSheet } from "react-native";
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
+});
+
+const App=()=>{
+  return(
+    <View style={{flexDirection:'column',flex:1}}>
+      <View style={[{flex:0.25,backgroundColor:'#6699A1'},styles.container]}>
+      <Text>Top</Text>
+      </View>
+      <View style={[{flex:1,backgroundColor:'#A5DEE4'},styles.container]}>
+      <Text>Middle</Text>
+      </View>
+      <View style={[{flex:0.5,backgroundColor:'#6699A1'},styles.container]}>
+      <Text>Buttom</Text>
       </View>
     </View>
   );
@@ -26,7 +106,38 @@ const App=()=>{
 
 
 
-export default App;
+export default App;*/
+
+
+// //0517 Layout - 以Row做版面
+// import { Text,View,StyleSheet } from "react-native";
+
+// const styles = StyleSheet.create({
+//   container: {
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   }
+// });
+
+// const App=()=>{
+//   return(
+//     <View style={{flexDirection:'row',flex:1}}>
+//       <View style={[{flex:0.25,backgroundColor:'#6699A1'},styles.container]}>
+//       <Text>Left</Text>
+//       </View>
+//       <View style={[{flex:0.5,backgroundColor:'#A5DEE4'},styles.container]}>
+//       <Text>Middle</Text>
+//       </View>
+//       <View style={[{flex:0.25,backgroundColor:'#6699A1'},styles.container]}>
+//       <Text>Right</Text>
+//       </View>
+//     </View>
+//   );
+// }
+
+
+
+// export default App;
 
 //0512 TextInput,StyleSheet,Image,Button,Alert
 /*import React from "react";
