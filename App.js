@@ -1,54 +1,402 @@
-//0517 - 
+import React, { useState } from "react";
+import { View, Switch, StyleSheet,Image,Text,Alert,Button } from "react-native";
+import { backgroundColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 
-import React,{ useState } from 'react';
-import { Text,View,StyleSheet,TouchableHighlight,TouchableOpacity } from "react-native";
-
-const styles = StyleSheet.create({
-  content:{
-    justifyContent:'center',
-    alignItems:'center',
-    backgroundColor:'#6699A1',
-    marginHorizontal:5,
-    height:50,
-    lineHeight:50,
-  },
-  topContent:{
-    alignItems:'center',
-    marginVertical:50,
+const App = () => {
+  const [bgc,setBgc]=useState('');
+  const myAlert=()=>{
+    Alert.alert(
+      '改變背景色',
+      '請問要改變背景顏色嗎?',
+      [
+        {
+          text:'OK',
+          style:'default',
+          onPress:()=>{
+            setBgc('#6699A1');
+          }
+        },
+        {
+          text:'No',
+          style:'cancel',
+          onPress:()=>{
+            setBgc('#fff');
+          }
+        }
+      ]
+    )
   }
-});
-
-const App=()=>{
-  const [count,setCount]=useState(0);
-  const addUp=()=>{
-    setCount(count+1)
-  };
-  const substract=()=>{
-    setCount(count-1)
-  };
-
-
-  return(
-    <View style={{flexDirection:'column',flex:1,justifyContent:'space-around',alignItems:'center'}}>
-      <View style={styles.topContent}>
-        <Text>增減結果</Text>
-        <Text>{count}</Text>
-      </View>
-
-      <View style={{flexDirection:'row',flex:1}}>
-        <TouchableHighlight style={[{flex:0.5,width:'100%'},styles.content]} onPress={addUp}>
-          <Text>增1</Text>
-        </TouchableHighlight>
-        <TouchableOpacity style={[{flex:0.5,width:'100%'},styles.content]} onPress={substract}>
-          <Text>減1</Text>
-        </TouchableOpacity>
-      </View>  
+  return (
+    <View style={[styles.container,{backgroundColor:bgc}]}>
+      <Button title={'Press Me'} onPress={myAlert}></Button>
     </View>
   );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor:'#fff'
+
+  }
+});
+
 export default App;
 
+
+/******************************************************************************************/
+// import React, { useState } from "react";
+// import { View, Switch, StyleSheet,Image,Text,Alert,Button } from "react-native";
+
+// const App = () => {
+//   const [bgc,setBgc]=useState(false);
+//   const myAlert=()=>{
+//     Alert.alert(
+//       '改變背景色',
+//       '請問要改變背景顏色嗎?',
+//       [
+//         {
+//           text:'OK',
+//           style:'default',
+//           onPress:()=>{
+//             console.log('OK');
+//             setBgc(true);
+//           }
+//         },
+//         {
+//           text:'No',
+//           style:'cancel',
+//           onPress:()=>{
+//             console.log('NO');
+//             setBgc(false);
+//           }
+//         }
+//       ]
+//     )
+//   }
+//   return (
+//     <View style={[styles.container,bgc?{backgroundColor:'#6699A1'}:{}]}>
+//       <Button title={'Press Me'} onPress={myAlert}></Button>
+//     </View>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     alignItems: "center",
+//     justifyContent: "center",
+//     backgroundColor:'#fff'
+
+//   }
+// });
+
+// export default App;
+
+
+/******************************************************************************************/
+// import React, { useState } from "react";
+// import { View, Switch, StyleSheet,Image,Text } from "react-native";
+
+// const App = () => {
+//   const [isEnabled, setIsEnabled] = useState(false);
+//   const toggleSwitch = () => setIsEnabled(
+//     previousState => !previousState
+//     );
+
+//   return (
+//     <View style={[styles.container,isEnabled?{backgroundColor:'#f5dd4b'}:{backgroundColor:'#f4f3f4'}]}>
+
+//       <Image source={isEnabled? require('./assets/on.gif'):require('./assets/off.gif')} />
+//       <Text style={{marginVertical:10}}>{isEnabled?'我亮了':'我暗了'}</Text>
+
+//       <Switch
+//         trackColor={{ false: "#767577", true: "#81b0ff" }}
+//         thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+//         ios_backgroundColor="#3e3e3e"
+//         onValueChange={toggleSwitch}
+//         value={isEnabled}
+//       />
+//     </View>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     alignItems: "center",
+//     justifyContent: "center"
+//   }
+// });
+
+// export default App;
+
+
+/******************************************************************************************/
+// import React,{ useState } from 'react';
+// import { Text,View,StyleSheet,TouchableHighlight,TouchableOpacity } from "react-native";
+
+// const styles = StyleSheet.create({
+//   contentStyle:{
+//     flex:1,
+//     justifyContent:'center',
+//     alignItems:'center',
+//     paddingHorizontal:15
+//   },
+//   outterStyle:{
+//     borderColor:'#A5DEE4',
+//     backgroundColor:'#A5DEE4',
+//     borderWidth:1,
+//     width:100,
+//     borderRadius:50,
+//     marginHorizontal:100,
+//   },
+//   buttonStyle:{
+//     height:60,
+//     justifyContent:'center',
+//     backgroundColor:'#6699A1',
+//     borderRadius:50,
+//     width:60,
+    
+//   },
+//   txtStyle:{
+//     textAlign:'center',
+//   }
+// });
+
+// const App=()=>{
+//   const [light,setLight]=useState(false);
+//   const greeting=()=>{
+//     setLight(light ? false:true);
+    
+//   };
+
+
+
+//   return(
+//     <View style={styles.contentStyle}>
+//       <View style={[styles.outterStyle,light?{alignItems:'flex-start'}:{alignItems:'flex-end'}]}>
+//         <TouchableHighlight style={styles.buttonStyle} onPress={greeting}>
+//           <Text style={styles.txtStyle}>{light?'HELLO':'哈囉'}</Text>
+//         </TouchableHighlight>
+//       </View>  
+//     </View>
+//   );
+// }
+
+// export default App;
+/******************************************************************************************/
+//0519
+
+// import React,{ useState } from 'react';
+// import { Text,View,StyleSheet,TouchableHighlight,TouchableOpacity } from "react-native";
+
+// const styles = StyleSheet.create({
+//     contentStyle:{
+//       flex:1,
+//       justifyContent:'center',
+//       alignItems:'center',
+//       paddingHorizontal:15,
+//     },
+//     outterStyle:{
+//       borderColor:'#A5DEE4',
+//       backgroundColor:'#A5DEE4',
+//       borderWidth:1,
+//       width:200,
+//       borderRadius:200,
+//       marginHorizontal:100,
+//       marginVertical:15,
+//       width:200
+//     },
+//     buttonStyle:{
+//       height:100,
+//       justifyContent:'center',
+//       backgroundColor:'#6699A1',
+//       borderRadius:100,
+//       width:100,
+      
+//     },
+//     txtStyle:{
+//       textAlign:'center',
+//       fontSize:25
+//     }
+//   });
+
+// const App=()=>{
+//   const [count,setCount]=useState(0);
+//   const [buttonUp,setButtonUp]=useState(count==0?true:false);
+//   const [buttonSub,setButtonSub]=useState(count==10?true:false);
+//   const addUp=()=>{
+//     if(count>=10){
+//       setCount(count+0)
+//       setButtonUp(false)
+//       setButtonSub(true)
+//     }
+//     else{
+//       setCount(count+1)
+//       setButtonUp(true)
+//       setButtonSub(true)
+//     }
+
+//   };
+//   const substract=()=>{
+//     if(count<=0){
+//       setCount(count-0)
+//       setButtonUp(true)
+//       setButtonSub(false)
+//     }
+//     else{
+//       setCount(count-1)
+//       setButtonUp(true)
+//       setButtonSub(true)
+//     }
+//   };
+
+
+//   return(
+//     <View style={styles.contentStyle}>
+//       <View style={styles.topContent}>
+//         <Text>增減結果</Text>
+//         <Text>{count}</Text>
+//       </View>
+
+//       <View style={styles.outterStyle}>
+//         <TouchableHighlight style={styles.buttonStyle} onPress={addUp}>
+//           <Text style={styles.txtStyle}>{buttonUp?'增1':'已無法再增加'}</Text>
+//           {/* <Text>{count==10?'已無法再增加':'增1'}</Text> */}
+//         </TouchableHighlight>
+//       </View>
+//         <View style={styles.outterStyle}>
+//           <TouchableOpacity style={styles.buttonStyle} onPress={substract}>
+//           <Text style={styles.txtStyle}>{buttonSub?'減1':'已無法再減少'}</Text>
+//         </TouchableOpacity>
+//         </View>
+//     </View>
+//   );
+// }
+
+// export default App;
+
+
+/******************************************************************************************/
+//0519
+// import React,{ useState } from 'react';
+// import { Text,View,StyleSheet,TouchableHighlight,TouchableOpacity } from "react-native";
+
+// const styles = StyleSheet.create({
+//   contentStyle:{
+//     flex:1,
+//     justifyContent:'center',
+//     alignItems:'center',
+//     paddingHorizontal:15
+//   },
+//   outterStyle:{
+//     borderColor:'#A5DEE4',
+//     backgroundColor:'#A5DEE4',
+//     borderWidth:1,
+//     width:100,
+//     borderRadius:50,
+//     marginHorizontal:100,
+//   },
+//   buttonStyle:{
+//     height:60,
+//     //alignItems:'center',
+//     justifyContent:'center',
+//     backgroundColor:'#6699A1',
+//     borderRadius:50,
+//     width:60,
+    
+//   },
+//   txtStyle:{
+//     textAlign:'center',
+//   }
+// });
+
+// const App=()=>{
+//   const [light,setLight]=useState(false);
+//   const greeting=()=>{
+//     setLight(light ? false:true);
+    
+//   };
+
+
+
+//   return(
+//     <View style={styles.contentStyle}>
+//       <View style={styles.outterStyle}>
+//         <TouchableHighlight style={styles.buttonStyle} onPress={greeting}>
+//           <Text style={styles.txtStyle}>{light?'HELLO':'哈囉'}</Text>
+//         </TouchableHighlight>
+//       </View>  
+//     </View>
+//   );
+// }
+
+// export default App;
+
+
+/******************************************************************************************/
+//0517 - 
+
+// import React,{ useState } from 'react';
+// import { Text,View,StyleSheet,TouchableHighlight,TouchableOpacity } from "react-native";
+
+// const styles = StyleSheet.create({
+//   content:{
+//     justifyContent:'center',
+//     alignItems:'center',
+//     backgroundColor:'#6699A1',
+//     marginHorizontal:5,
+//     height:50,
+//     lineHeight:50,
+//   },
+//   topContent:{
+//     alignItems:'center',
+//     marginVertical:50,
+//   }
+// });
+
+// const App=()=>{
+//   const [count,setCount]=useState(0);
+//   const addUp=()=>{
+//     if(count>=10)
+//       setCount(count+0)
+//     else
+//       setCount(count+1)
+//   };
+//   const substract=()=>{
+//     if(count<=0)
+//       setCount(count-0)
+//     else
+//       setCount(count-1)
+//   };
+
+
+//   return(
+//     <View style={{flexDirection:'column',flex:1,justifyContent:'space-around',alignItems:'center'}}>
+//       <View style={styles.topContent}>
+//         <Text>增減結果</Text>
+//         <Text>{count}</Text>
+//       </View>
+
+//       <View style={{flexDirection:'row',flex:1}}>
+//         <TouchableHighlight style={[{flex:0.5,width:'100%'},styles.content]} onPress={addUp}>
+//           <Text>增1</Text>
+//         </TouchableHighlight>
+//         <TouchableOpacity style={[{flex:0.5,width:'100%'},styles.content]} onPress={substract}>
+//           <Text>減1</Text>
+//         </TouchableOpacity>
+//       </View>  
+//     </View>
+//   );
+// }
+
+// export default App;
+
+
+/******************************************************************************************/
 //0517 
 /*import { Text,View,StyleSheet } from "react-native";
 
@@ -109,6 +457,7 @@ const App=()=>{
 export default App;*/
 
 
+/******************************************************************************************/
 // //0517 Layout - 以Row做版面
 // import { Text,View,StyleSheet } from "react-native";
 
@@ -255,12 +604,9 @@ const styles = StyleSheet.create({
   });*/
 
 //export default BMI;
-
-
   
 
-
-
+/******************************************************************************************/
 // import React from 'react';
 // import { StyleSheet,Text, View } from 'react-native';
 // //0512 
@@ -301,6 +647,7 @@ const styles = StyleSheet.create({
 // });
 
 
+/******************************************************************************************/
 //0510 state:屬性 setState:方法
 // export default class App extends React.Component{
 //   state={
