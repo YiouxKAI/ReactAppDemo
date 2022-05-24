@@ -1,49 +1,337 @@
-import React, { useState } from "react";
-import { View, Switch, StyleSheet,Image,Text,Alert,Button } from "react-native";
-import { backgroundColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
+//05/24-Modal
+/*Text 寫可以加入onPress當按鈕 */
+import React,{Component} from 'react';
+import { StyleSheet, Text, ScrollView, StatusBar,View,Button,Modal,TouchableOpacity,Image,Pressable } from 'react-native';
 
-const App = () => {
-  const [bgc,setBgc]=useState('');
-  const myAlert=()=>{
-    Alert.alert(
-      '改變背景色',
-      '請問要改變背景顏色嗎?',
-      [
-        {
-          text:'OK',
-          style:'default',
-          onPress:()=>{
-            setBgc('#6699A1');
-          }
-        },
-        {
-          text:'No',
-          style:'cancel',
-          onPress:()=>{
-            setBgc('#fff');
-          }
-        }
-      ]
+export default class App extends Component{
+  state={
+    isVisible:false
+  }
+  displayModal(show){
+    this.setState({isVisible:show})
+  }
+  render(){
+    return(
+      <View style={styles.container}>
+        <Modal
+        animationType='fade'
+        visible={this.state.isVisible}>
+          <View>
+            <Image source={require('./assets/fruit/apple.jpg')} style={styles.imgStyle} />
+            <ScrollView>
+              <Text style={styles.txtContain}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+            minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+            culpa qui officia deserunt mollit anim id est laborum.
+              </Text>
+            </ScrollView>
+          </View>
+
+            <Pressable onPress={()=>{this.displayModal(!this.state.isVisible)}} style={({pressed})=>[{backgroundColor:pressed?'#646A58':'#6A8372'},styles.mypress]} >
+              <Text style={{height:100}}>Hello World</Text>
+            </Pressable>
+
+
+        </Modal>
+
+        <View>
+          <TouchableOpacity onPress={()=>{this.displayModal(true)}} style={styles.btnStyle}>
+            <Text style={styles.txtStyle}>Click</Text>
+          </TouchableOpacity>
+        </View>
+
+
+      </View>
     )
   }
+}
+
+const styles=StyleSheet.create({
+    container:{
+      flex:1,
+      flexDirection:'column',
+      justifyContent:'space-around',   
+      alignItems:'center'
+    },
+    btnStyle:{
+      height:100,
+      width:100,
+      borderRadius:100,
+      backgroundColor:'#6A8372',
+      alignItems:'center',
+      justifyContent:'center',
+      shadowOffset: { 
+        height: 10, 
+        width: 5 
+      },
+      shadowRadius: 10,
+      marginVertical:20,
+    },
+    txtStyle:{
+      color:'#fff',
+    },
+    txtContain:{
+      fontSize: 18,
+      marginBottom: 15,
+      padding: 20,
+    },
+    imgStyle:{
+      marginTop: 100,
+      marginBottom: 10,
+      width: 400,
+      height: 400,
+      borderRadius:200,
+      borderWidth:10,
+      borderStyle:'solid',
+      borderColor:'#877F6C',
+    },
+    mypress:{
+      borderColor:'lightgray',
+      borderWidth:1,
+      borderRadius:10,
+      paddingHorizontal:20,
+      width:300,
+      marginTop:20   
+    }
+  })
+
+/******************************************************************************************/
+
+/*05/24-
+ * StatusBar,APP的狀態列，時間，wifi，電量...等
+ * SafeAreaView，針對iOS，安全區域視埠 */
+
+/*
+import React,{useState} from 'react';
+import { StyleSheet, Text, SafeAreaView, ScrollView, StatusBar,View,Button } from 'react-native';
+
+
+const App = () => {
+  const [hidden,setHidden]=useState(false);
   return (
-    <View style={[styles.container,{backgroundColor:bgc}]}>
-      <Button title={'Press Me'} onPress={myAlert}></Button>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <StatusBar
+      backgroundColor='#6A8372'
+      barStyle='light-content'
+      hidden={hidden} />
+
+      <View>
+        <Button title='Press to Hide' onPress={()=>{setHidden(!hidden)}} />
+      </View>
+
+      <ScrollView style={styles.scrollView}>
+        <Text style={styles.text}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </Text>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor:'#fff'
-
-  }
+    paddingTop: StatusBar.currentHeight,
+  },
+  scrollView: {
+    backgroundColor: 'pink',
+    marginHorizontal: 20,
+  },
+  text: {
+    fontSize: 42,
+  },
 });
 
 export default App;
+*/
+/******************************************************************************************/
+
+// import React, { useState } from "react";
+// import { View, StyleSheet,Text } from "react-native";
+// import Slider from '@react-native-community/slider';
+
+// export default function MySlider(){
+//   const [c,setC]=useState(0);
+//   const [f,setF]=useState(0);
+
+//   const setTempC=()=>{
+//     setC(5/9*(f-32))
+//   }
+
+//   const setTempF=()=>{
+//     setF((c*9/5)+32)
+//   }
+
+//   return(
+//     <View style={styles.container}>
+      
+//       <View style={styles.middleContainer}>
+//       <Text>{c.toFixed(2)}</Text>
+//         <View style={styles.mySliderOutter}>
+//           <Slider
+//             style={styles.mySlider}
+//             minimumValue={0}
+//             maximumValue={200}
+//             minimumTrackTintColor="#FFFFFF"
+//             maximumTrackTintColor="#000000"
+//             step={1}
+//             value={c}
+//             onValueChange={setC}
+//             onSlidingStart={setTempC}
+//             onSlidingComplete={setTempF}
+//           />
+//         </View>
+//         <Text style={styles.txtStyle}>攝氏溫度</Text>
+//       </View>
+
+//       <View style={styles.middleContainer}>
+//       <Text>{f}</Text>
+//         <View style={styles.mySliderOutter}>
+//           <Slider
+//             style={styles.mySlider}
+//             minimumValue={1}
+//             maximumValue={200}
+//             minimumTrackTintColor="#FFFFFF"
+//             maximumTrackTintColor="#000000"
+//             step={2}
+//             value={f}
+//             onValueChange={setF}
+//             onSlidingStart={setTempF}
+//             onSlidingComplete={setTempC}
+//           />
+//         </View>
+//         <Text style={styles.txtStyle}>攝氏溫度</Text>
+//       </View>
+//     </View>
+//   )
+// }
+// const styles=StyleSheet.create({
+//   container:{
+//     flex:1,
+//     flexDirection:'column',
+//     justifyContent:'space-around',   
+//     alignItems:'center'
+//   },
+
+//   middleContainer:{
+//     flex:0.45,
+//     justifyContent:'center',
+//     alignItems:'center'
+//   },
+//   mySlider:{
+//     width:300,
+//     height:40,
+//   } ,
+
+//   mySliderOutter:{
+//     width:300,
+//     height:40,
+//     backgroundColor:'lightgray',
+//     borderRadius:25
+//   } 
+//   ,txtStyle:{
+//     fontSize:24,
+//     marginBottom:15
+//   }
+// }); 
+
+/******************************************************************************************/
+//0524-Slider
+// import React, { useState } from "react";
+// import { View, StyleSheet,Text } from "react-native";
+// import Slider from '@react-native-community/slider';
+
+// export default function MySlider(){
+//   const [value,setValue]=useState(0);
+//   return(
+//     <View style={styles.container}>
+//       <Text>{value}</Text>
+      
+//       <View>
+//       <Slider
+//         style={{width: 200, height: 40}}
+//         minimumValue={0}
+//         maximumValue={200}
+//         minimumTrackTintColor="#FFFFFF"
+//         maximumTrackTintColor="#000000"
+//         step={2}
+//         value={value}
+//         onValueChange={setValue}
+//       />
+//       </View>
+      
+//     </View>
+//   )
+// }
+// const styles = StyleSheet.create({
+//     container: {
+//       flex: 1,
+//       alignItems: "center",
+//       justifyContent: "center",
+//     },
+//     mySlider:{
+
+//     }
+//   });
+
+/******************************************************************************************/
+
+// import React, { useState } from "react";
+// import { View, Switch, StyleSheet,Image,Text,Alert,Button } from "react-native";
+// import { backgroundColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
+
+// const App = () => {
+//   const [bgc,setBgc]=useState('');
+//   const myAlert=()=>{
+//     Alert.alert(
+//       '改變背景色',
+//       '請問要改變背景顏色嗎?',
+//       [
+//         {
+//           text:'OK',
+//           style:'default',
+//           onPress:()=>{
+//             setBgc('#6699A1');
+//           }
+//         },
+//         {
+//           text:'No',
+//           style:'cancel',
+//           onPress:()=>{
+//             setBgc('#fff');
+//           }
+//         }
+//       ]
+//     )
+//   }
+//   return (
+//     <View style={[styles.container,{backgroundColor:bgc}]}>
+//       <Button title={'Press Me'} onPress={myAlert}></Button>
+//     </View>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     alignItems: "center",
+//     justifyContent: "center",
+//     backgroundColor:'#fff'
+
+//   }
+// });
+
+// export default App;
 
 
 /******************************************************************************************/
