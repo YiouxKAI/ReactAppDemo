@@ -1,103 +1,261 @@
-//05/24-Modal
-/*Text 寫可以加入onPress當按鈕 */
-import React,{Component} from 'react';
-import { StyleSheet, Text, ScrollView, StatusBar,View,Button,Modal,TouchableOpacity,Image,Pressable } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Button, Image, View, Platform } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
-export default class App extends Component{
-  state={
-    isVisible:false
-  }
-  displayModal(show){
-    this.setState({isVisible:show})
-  }
-  render(){
-    return(
-      <View style={styles.container}>
-        <Modal
-        animationType='fade'
-        visible={this.state.isVisible}>
-          <View>
-            <Image source={require('./assets/fruit/apple.jpg')} style={styles.imgStyle} />
-            <ScrollView>
-              <Text style={styles.txtContain}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-            minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-              </Text>
-            </ScrollView>
-          </View>
+export default function ImagePickerExample() {
+  const [image, setImage] = useState(null);
 
-            <Pressable onPress={()=>{this.displayModal(!this.state.isVisible)}} style={({pressed})=>[{backgroundColor:pressed?'#646A58':'#6A8372'},styles.mypress]} >
-              <Text style={{height:100}}>Hello World</Text>
-            </Pressable>
+  const pickImage = async () => {
+
+    //useEffect(參數1,參數2)
+    useEffect(() => {
+      (async () => {
+        if (Platform.OS !== 'web') {
+          const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+          if (status !== 'granted') { //若未授予權限,則
+            alert('抱歉，我們需要相機膠卷權限才能完成這項工作!');
+          }
+        }
+      })();
+    }, []);
 
 
-        </Modal>
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
-        <View>
-          <TouchableOpacity onPress={()=>{this.displayModal(true)}} style={styles.btnStyle}>
-            <Text style={styles.txtStyle}>Click</Text>
-          </TouchableOpacity>
-        </View>
+    console.log(result);
 
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
 
-      </View>
-    )
-  }
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Button title="Pick an image from camera roll" onPress={pickImage} />
+      {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+    </View>
+  );
 }
 
-const styles=StyleSheet.create({
-    container:{
-      flex:1,
-      flexDirection:'column',
-      justifyContent:'space-around',   
-      alignItems:'center'
-    },
-    btnStyle:{
-      height:100,
-      width:100,
-      borderRadius:100,
-      backgroundColor:'#6A8372',
-      alignItems:'center',
-      justifyContent:'center',
-      shadowOffset: { 
-        height: 10, 
-        width: 5 
-      },
-      shadowRadius: 10,
-      marginVertical:20,
-    },
-    txtStyle:{
-      color:'#fff',
-    },
-    txtContain:{
-      fontSize: 18,
-      marginBottom: 15,
-      padding: 20,
-    },
-    imgStyle:{
-      marginTop: 100,
-      marginBottom: 10,
-      width: 400,
-      height: 400,
-      borderRadius:200,
-      borderWidth:10,
-      borderStyle:'solid',
-      borderColor:'#877F6C',
-    },
-    mypress:{
-      borderColor:'lightgray',
-      borderWidth:1,
-      borderRadius:10,
-      paddingHorizontal:20,
-      width:300,
-      marginTop:20   
-    }
-  })
+/******************************************************************************************/
+//05/26-Picker
+// import React,{useState} from 'react';
+// import {View,Text,Image,StyleSheet} from 'react-native';
+// import {Picker} from '@react-native-picker/picker';
+
+// const styles = StyleSheet.create({
+//       contentStyle:{
+//         flex:1,
+//         justifyContent:'center',
+//         alignItems:'center',
+//         paddingHorizontal:15,
+//       },
+//       ddlStyle:{
+//         height:50,
+//         justifyContent:'center',
+//         borderRadius:100,
+//         width:'50%',
+        
+//       },
+//       txtStyle:{
+//         textAlign:'center',
+//         fontSize:18
+//       }
+//     });
+
+// const App=()=>{
+//   const [value,setValue]=useState(0);
+//   const path=[
+//     require('./assets/fruit2/0.jpg'),
+//     require('./assets/fruit2/1.jpg'),
+//     require('./assets/fruit2/2.jpg'),
+//     require('./assets/fruit2/3.jpg')
+//   ]
+
+//   return(
+//     <View style={styles.contentStyle}>
+//       <Text style={styles.txtStyle}>請選擇你喜歡的水果:</Text>
+//       <Picker style={styles.ddlStyle} onValueChange={setValue} selectedValue={value} >
+//         <Picker.Item label='Litchi' value='0'></Picker.Item>
+//         <Picker.Item label='Apple' value='1'></Picker.Item>
+//         <Picker.Item label='Banana' value='2'></Picker.Item>
+//         <Picker.Item label='grape' value='3'></Picker.Item>
+//       </Picker>
+//       {/*Android-->require()不可用變數連接
+//         Web-->require()可以用變數連接
+//       <Image source={require('./assets/fruit2/'+value+'.jpg')} />
+//       */}
+//       {/* <Image source={require('./assets/fruit2/7.jpg')} /> */}
+
+//       <Image source={path[value]} />
+//       <Text>./assets/fruit2/{value}.jpg</Text>
+
+//     </View>
+//   )
+// }
+
+// export default App;
+
+/******************************************************************************************/
+//05/26-ActivityIndicator
+// import React,{Component} from 'react';
+// import { Text,View,ActivityIndicator,Button } from 'react-native';
+
+// export default class MyActivityIndicator extends Component{
+
+//   constructor(){
+//     super();
+//     this.state={
+//       flag:true
+//     }
+//     console.log('1.constructor');
+//   }
+
+//   // state={
+//   //   flag:true,
+//   // }
+  
+//   stopActivityIndicator=()=>{setTimeout(()=>{this.setState({flag:false})},1000)};
+
+//   //組件在呈現在DOM中，可以執行React code
+//   componentDidMount=()=>{
+//     this.stopActivityIndicator()
+//     console.log('3.componentDidMount')
+//   };
+
+//   render(){
+//     console.log('2.render')
+//     const flag=this.state.flag;
+//     return(
+
+//       <View style={{flex:1,justifyContent:'space-around',alignItems:'center'}}>
+//         <Text>Loading...</Text>
+//         <View>
+//           <ActivityIndicator
+//           animating={flag}
+//           size='large'
+//           color='#6A8372'
+//           />
+//           <Button title='LOAD' onPress={()=>{this.setState({flag:true});
+//             this.stopActivityIndicator();
+//           }} />
+//         </View>
+//       </View>
+//     );
+//   }
+// }
+
+/******************************************************************************************/
+
+//05/24-Modal
+/*Text 寫可以加入onPress當按鈕 */
+// import React,{Component} from 'react';
+// import { StyleSheet, Text, ScrollView, StatusBar,View,Button,Modal,TouchableOpacity,Image,Pressable,Alert } from 'react-native';
+
+// export default class App extends Component{
+//   state={
+//     isVisible:false
+//   }
+//   displayModal(show){
+//     this.setState({isVisible:show})
+//   }
+//   render(){
+//     return(
+//       <View style={styles.container}>
+//         <Modal
+//         animationType='fade'
+//         visible={this.state.isVisible}>
+//           <View>
+//             <Image source={require('./assets/fruit/apple.jpg')} style={styles.imgStyle} />
+//             <ScrollView style={{height:100,marginHorizontal:20}}>
+//               <Text style={styles.txtContain}>
+//               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+//             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+//             minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+//             aliquip ex ea commodo consequat. Duis aute irure dolor in
+//             reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+//             pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+//             culpa qui officia deserunt mollit anim id est laborum.
+//               </Text>
+//             </ScrollView>
+//           </View>
+
+//             <Pressable onPress={()=>{this.displayModal(!this.state.isVisible)}} style={({pressed})=>[{backgroundColor:pressed?'#646A58':'#6A8372'},styles.mypress]} 
+//             onLongPress={()=>Alert.alert('ALOHA!')} >
+//               {/* <Text style={{height:100}}>Hello World</Text> */}
+//               {({pressed})=>(<Text style={styles.mypress}>{pressed?'BYE':'ALOHA'}</Text>)}
+//             </Pressable>
+            
+
+
+//         </Modal>
+
+//         <View>
+//           <TouchableOpacity onPress={()=>{this.displayModal(true)}} style={styles.btnStyle}>
+//             <Text style={styles.txtStyle}>Click</Text>
+//           </TouchableOpacity>
+//         </View>
+
+
+//       </View>
+//     )
+//   }
+// }
+
+// const styles=StyleSheet.create({
+//     container:{
+//       flex:1,
+//       flexDirection:'column',
+//       justifyContent:'space-around',   
+//       alignItems:'center'
+//     },
+//     btnStyle:{
+//       height:100,
+//       width:100,
+//       borderRadius:100,
+//       backgroundColor:'#6A8372',
+//       alignItems:'center',
+//       justifyContent:'center',
+//       shadowOffset: { 
+//         height: 10, 
+//         width: 5 
+//       },
+//       shadowRadius: 10,
+//       marginVertical:20,
+//     },
+//     txtStyle:{
+//       color:'#fff',
+//     },
+//     txtContain:{
+//       fontSize: 18,
+//       marginBottom: 15,
+//       padding: 20,
+//     },
+//     imgStyle:{
+//       marginTop: 100,
+//       marginBottom: 10,
+//       width: 400,
+//       height: 400,
+//       borderRadius:200,
+//       borderWidth:10,
+//       borderStyle:'solid',
+//       borderColor:'#877F6C',
+//     },
+//     mypress:{
+//       borderColor:'lightgray',
+//       borderWidth:1,
+//       borderRadius:10,
+//       paddingHorizontal:20,
+//       width:300,
+//       marginTop:20,   
+//     }
+//   })
 
 /******************************************************************************************/
 
