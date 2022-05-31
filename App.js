@@ -1,47 +1,331 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Image, View, Platform } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+import React, { Component } from 'react';
+import { View,StyleSheet,Text,Alert,Button } from 'react-native';
+import * as DocumentPicker from 'expo-document-picker';
 
-export default function ImagePickerExample() {
-  const [image, setImage] = useState(null);
+export default class MyDocPicker extends Component{
+  
+  state=[
+    myName='',
+  ];
 
-  const pickImage = async () => {
-
-    //useEffect(參數1,參數2)
-    useEffect(() => {
-      (async () => {
-        if (Platform.OS !== 'web') {
-          const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-          if (status !== 'granted') { //若未授予權限,則
-            alert('抱歉，我們需要相機膠卷權限才能完成這項工作!');
-          }
-        }
-      })();
-    }, []);
-
-
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
+  pickDocument=async()=>{
+    let result=await DocumentPicker.getDocumentAsync({});
+    Alert.alert(result.uri);
     console.log(result);
-
-    if (!result.cancelled) {
-      setImage(result.uri);
-    }
+    this.setState(()=>this.state.myName=result.name);
   };
 
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button title="Pick an image from camera roll" onPress={pickImage} />
-      {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-    </View>
-  );
+  render(){
+    return(
+      <View style={styles.mycontainer}>
+        <View>
+          <Text>{this.state.myName}</Text>
+        </View>
+        <Button title='請選擇文件' onPress={this.pickDocument}></Button>
+      </View>
+    );
+  }
+
 }
+const styles = StyleSheet.create({
+  mycontainer: {  
+    flex: 1,  
+    flexDirection:'row',
+    alignItems:'center'
+},  
+
+myitem: {  
+  padding: 10,  
+  fontSize: 18,  
+  height: 44,  
+},
+});
+
+/******************************************************************************************/
+// import React, { useState, useEffect,Component } from 'react';
+// import { FlatList,View,StyleSheet,Text,Alert,StatusBar } from 'react-native';
+
+// export default class MyFlatList  extends Component{
+//   getItem=(item)=>{
+//     Alert.alert(item.key);
+//   }
+//   mySeparator=()=>{
+//     return(
+//       <View style={{height:1,width:'100%',backgroundColor:'gray'}} />
+//     )
+//   }
+//   render(){
+//     return(
+//       <View style={styles.mycontainer}>
+//       <FlatList 
+//         data={[
+//           {key:'Apple'},
+//           {key:'Banana'},
+//           {key:'Cherry'}
+//         ]}
+//         renderItem={({item})=><Text style={styles.myitem} onPress={this.getItem.bind(this,item)}>{item.key}</Text>}
+//         ItemSeparatorComponent={this.mySeparator}
+//         />
+//         <Text></Text>
+//     </View> 
+//     )
+
+//   }
+// }
+
+// const styles = StyleSheet.create({
+//   mycontainer: {  
+//     flex: 1,  
+//     flexDirection:'row',
+//     alignItems:'center'
+// },  
+
+// myitem: {  
+//   padding: 10,  
+//   fontSize: 18,  
+//   height: 44,  
+// },
+// });
+
+/******************************************************************************************/
+// import React, { useState, useEffect } from 'react';
+// import { StyleSheet, View,Text,SectionList,Alert,StatusBar } from 'react-native';
+
+// const styles = StyleSheet.create({
+//   mycontainer: {
+//     flex: 1,   
+//     marginHorizontal: 8,
+//     paddingTop:StatusBar.currentHeight
+//   },
+//   myitem: {
+//     backgroundColor: "green",
+//     padding: 10,
+//     marginVertical: 5
+//   },
+//   myheader: {
+//     fontSize: 24,
+//     backgroundColor: "tomato"
+//   },
+//   mytitle: {
+//     fontSize: 18,
+//     color:'white'
+//   }
+// });
+
+//     const DATA=[{
+//       title:'Spring Fruit',
+//       data:['香蕉','蘋果']
+//     },{
+//       title:'Summer Fruit',
+//       data:['芒果','荔枝']
+//     },{
+//       title:'Autum Fruit',
+//       data:['蓮霧','芭樂']
+//     },{
+//       title:'Winter Fruit',
+//       data:['橘子','蘋果']
+//     },];
+
+//     getItem=(item)=>{
+//       Alert.alert(item);
+//     }
+
+// const Fruit=()=>(
+
+//   // return(
+//     <View style={styles.mycontainer}>
+//       <SectionList 
+//       renderItem={({item})=><Text style={styles.myitem} onPress={getItem.bind(this,item)}>{item}</Text>}
+//       sections={DATA}
+//       renderSectionHeader={({section:{title}})=>(<Text style={styles.myheader}>{title}</Text>)}
+//       keyExtractor={(item,index)=>item+index}
+//       />
+//       <Text></Text>
+//     </View>
+//   // )
+// );
+
+// export default Fruit;
+
+
+/******************************************************************************************/
+// import React, { useState, useEffect } from 'react';
+// import { StyleSheet,Button, View,Text } from 'react-native';
+
+// const styles = StyleSheet.create({
+//       contentStyle:{
+//         flex:1,
+//         justifyContent:'center',
+//         alignItems:'center',
+//         paddingHorizontal:15,
+//       },
+//       ddlStyle:{
+//         height:50,
+//         justifyContent:'center',
+//         borderRadius:100,
+//         width:'50%',
+        
+//       },
+//       txtStyle:{
+//         textAlign:'center',
+//         fontSize:18
+//       }
+//     });
+
+// const MyTimer=()=>{
+
+//   const [count,setCount]=useState(0);
+
+//   //也可直接傳回某個值
+//   const [calc,setCalc]=useState(()=>{return 0;});
+
+//   //setCalc(count*2); error，太多的重新渲染，React限制渲染的次數，防止無窮的重複
+//   //useEffect(callback function,array)，第二個參數可以省略
+
+//   const myData={
+//      code:200,
+//      msg:'成功',
+//      info:{
+//        id:count,
+//        name:'Kaye',
+//        age:20,
+//      }
+//   }
+
+//   console.log(myData);
+
+//   useEffect(()=>{
+//     console.log('Hello');
+//   });
+
+//   useEffect(()=>{
+//     console.log(myData);
+//   },[]);
+
+//   useEffect(()=>{
+//     console.log('Hi');
+//   },[count]);
+
+//   useEffect(()=>{
+//     console.log('haha');
+//   },['a','b']);
+
+//   return(
+//     <View style={styles.contentStyle}>
+//       <Text>{count}</Text>
+//       <Button title='CALC' onPress={()=>setCount(count+1)}></Button>
+//     </View>
+//   )
+// }
+
+// export default MyTimer;
+
+/******************************************************************************************/
+// import React, { useState, useEffect } from 'react';
+// import { StyleSheet,Button, View,Text } from 'react-native';
+
+// const styles = StyleSheet.create({
+//       contentStyle:{
+//         flex:1,
+//         justifyContent:'center',
+//         alignItems:'center',
+//         paddingHorizontal:15,
+//       },
+//       ddlStyle:{
+//         height:50,
+//         justifyContent:'center',
+//         borderRadius:100,
+//         width:'50%',
+        
+//       },
+//       txtStyle:{
+//         textAlign:'center',
+//         fontSize:18
+//       }
+//     });
+
+// const MyTimer=()=>{
+
+//   const [count,setCount]=useState(0);
+//   const [calc,setCalc]=useState(0);
+
+
+//   //setCalc(count*2); error，太多的重新渲染，React限制渲染的次數，防止無窮的重複
+//   //useEffect(callback function,array)，第二個參數可以省略
+
+//   const myData={
+//      code:200,
+//      msg:'成功',
+//      info:{
+//        id:1,
+//        name:'Kaye',
+//        age:20,
+//      }
+//   }
+
+//   console.log(myData);
+
+//   useEffect(()=>{
+//     setCalc(count*2)
+//   },[count]);
+
+//   return(
+//     <View style={styles.contentStyle}>
+//       <Text>{count}</Text>
+//       <Button title='CALC' onPress={()=>setCount(count+1)}></Button>
+//       <Text>{calc}</Text>
+//     </View>
+//   )
+// }
+
+// export default MyTimer;
+
+
+/******************************************************************************************/
+// import React, { useState, useEffect } from 'react';
+// import { Button, Image, View, Platform } from 'react-native';
+// import * as ImagePicker from 'expo-image-picker';
+
+// export default function ImagePickerExample() {
+//   const [image, setImage] = useState(null);
+
+//   const pickImage = async () => {
+
+//     //useEffect(參數1,參數2)
+//     useEffect(() => {
+//       (async () => {
+//         if (Platform.OS !== 'web') {
+//           const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+//           if (status !== 'granted') { //若未授予權限,則
+//             alert('抱歉，我們需要相機膠卷權限才能完成這項工作!');
+//           }
+//         }
+//       })();
+//     }, []);
+
+
+//     // No permissions request is necessary for launching the image library
+//     let result = await ImagePicker.launchImageLibraryAsync({
+//       mediaTypes: ImagePicker.MediaTypeOptions.All,
+//       allowsEditing: true,
+//       aspect: [4, 3],
+//       quality: 1,
+//     });
+
+//     console.log(result);
+
+//     if (!result.cancelled) {
+//       setImage(result.uri);
+//     }
+//   };
+
+//   return (
+//     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+//       <Button title="Pick an image from camera roll" onPress={pickImage} />
+//       {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+//     </View>
+//   );
+// }
 
 /******************************************************************************************/
 //05/26-Picker
