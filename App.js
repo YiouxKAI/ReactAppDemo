@@ -1,45 +1,287 @@
-import React, { Component } from 'react';
-import { View,StyleSheet,Text,Alert,Button } from 'react-native';
-import * as DocumentPicker from 'expo-document-picker';
+import * as React from 'react';
+import { WebView } from 'react-native-webview';
+import { StyleSheet } from 'react-native';
+import Constants from 'expo-constants';
 
-export default class MyDocPicker extends Component{
-  
-  state=[
-    myName='',
-  ];
-
-  pickDocument=async()=>{
-    let result=await DocumentPicker.getDocumentAsync({});
-    Alert.alert(result.uri);
-    console.log(result);
-    this.setState(()=>this.state.myName=result.name);
-  };
-
-  render(){
-    return(
-      <View style={styles.mycontainer}>
-        <View>
-          <Text>{this.state.myName}</Text>
-        </View>
-        <Button title='請選擇文件' onPress={this.pickDocument}></Button>
-      </View>
-    );
-  }
-
+export default function App() {
+  return (
+    <WebView 
+      style={styles.container}
+      source={{ uri: 'https://expo.dev' }}
+    />
+  );
 }
-const styles = StyleSheet.create({
-  mycontainer: {  
-    flex: 1,  
-    flexDirection:'row',
-    alignItems:'center'
-},  
 
-myitem: {  
-  padding: 10,  
-  fontSize: 18,  
-  height: 44,  
-},
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: Constants.statusBarHeight,
+  },
 });
+
+/******************************************************************************************/
+/*0607-WebView */
+
+// import * as React from 'react';
+// import { WebView } from 'react-native-webview';
+// import { StyleSheet } from 'react-native';
+// import Constants from 'expo-constants';
+
+// export default function App() {
+//   return (
+//     <WebView 
+//       style={styles.container}
+//       source={{ uri: 'https://expo.dev' }}
+//     />
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     marginTop: Constants.statusBarHeight,
+//   },
+// });
+
+/******************************************************************************************/
+/*0607-Camera */
+
+// import React, { useState, useEffect } from 'react';
+// import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+// import { Camera, CameraType } from 'expo-camera';
+
+// export default function App() {
+//   const [hasPermission, setHasPermission] = useState(null);
+//   const [type, setType] = useState(CameraType.back);
+
+//   useEffect(() => {
+//     (async () => {
+//       const { status } = await Camera.requestCameraPermissionsAsync();
+//       setHasPermission(status === 'granted');
+//     })();
+//   }, []);
+
+//   if (hasPermission === null) {
+//     return <View />;
+//   }
+//   if (hasPermission === false) {
+//     return <Text>No access to camera</Text>;
+//   }
+//   return (
+//     <View style={styles.container}>
+//       <Camera style={styles.camera} type={type}>
+//         <View style={styles.buttonContainer}>
+//           <TouchableOpacity
+//             style={styles.button}
+//             onPress={() => {
+//               setType(type === CameraType.back ? CameraType.front : CameraType.back);
+//             }}>
+//             <Text style={styles.text}> Flip </Text>
+//           </TouchableOpacity>
+//         </View>
+//       </Camera>
+//     </View>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//   },
+//   camera: {
+//     flex: 1,
+//   },
+//   buttonContainer: {
+//     flex: 1,
+//     backgroundColor: 'transparent',
+//     flexDirection: 'row',
+//     margin: 20,
+//   },
+//   button: {
+//     flex: 0.1,
+//     alignSelf: 'flex-end',
+//     alignItems: 'center',
+//   },
+//   text: {
+//     fontSize: 18,
+//     color: 'white',
+//   },
+// });
+
+/******************************************************************************************/
+/*0607-Animated */
+// import React, { useRef } from "react";
+// import { Animated, Text, View, StyleSheet, Button, SafeAreaView } from "react-native";
+
+// const App = () => {
+//   // 淡入淡出動畫將用作不透明度的值，設定初始值0
+//   const fadeAnim = useRef(new Animated.Value(0)).current;
+
+//   const fadeIn = () => {
+//    // 將在 10 秒內將fadeAnim 值更改為 1
+//     Animated.timing(fadeAnim, {
+//       toValue: 1,
+//       duration: 10000,
+//       useNativeDriver:true,
+//     }).start();
+//   };
+
+//   //useNativeDriver 說明參考 https://ithelp.ithome.com.tw/articles/10274623?sc=iThelpR
+//   const fadeOut = () => {
+//     // 將在 5 秒內將fadeAnim 值更改為 0
+//     Animated.timing(fadeAnim, {
+//       toValue: 0,
+//       duration: 5000,
+//       useNativeDriver:true,
+//     }).start();
+//   };
+
+//   return (
+//     <SafeAreaView style={styles.container}>
+//       <Animated.View
+//         style={[
+//           styles.fadingContainer,
+//           {
+//            // 將不透明度綁定到動畫值
+//             opacity: fadeAnim
+//           }
+//         ]}
+//       >
+//         <Text style={styles.fadingText}>
+//           Taiwan Fruit 
+//           Visitors can taste the fresh fruits of the season in Taiwan and experience the fun of fruit picking.
+//           Let us visit the gardens all over Taiwan.
+//           </Text>
+//       </Animated.View>
+//       <View style={styles.buttonRow}>
+//         <Button title="淡入" onPress={fadeIn} />
+//         <Button title="淡出" onPress={fadeOut}/>
+//       </View>
+//     </SafeAreaView>
+//   );
+// }
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     alignItems: "center",
+//     justifyContent: "center"
+//   },
+//   fadingContainer: {
+//     padding: 10,
+//     backgroundColor: "tomato",
+//     //width:'50vw', //Android不支援
+//     //height:'50vh'
+//   },
+//   fadingText: {
+//     fontSize: 24,
+//     color:'white'
+//   },
+//   buttonRow: {
+//     flexBasis: 80,
+//     justifyContent: "space-evenly",
+   
+//   }
+// });
+
+// export default App;
+
+
+/******************************************************************************************/
+/*0607-Keyboard */
+// import React, { useState, useEffect } from "react";
+// import { Keyboard, Text, TextInput, StyleSheet, View } from "react-native";
+
+// const App = () => {
+//   const [keyboardStatus, setKeyboardStatus] = useState(undefined);
+
+//   useEffect(() => {
+//     const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+//       setKeyboardStatus("Keyboard Shown");
+//     });
+//     const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+//       setKeyboardStatus("Keyboard Hidden");
+//     });
+
+//     return () => {
+//       showSubscription.remove();
+//       hideSubscription.remove();
+//     };
+//   }, []);
+
+//   return (
+//     <View style={style.container}>
+//       <TextInput
+//         style={style.input}
+//         placeholder='請輸入您最愛的台灣水果....'
+//         onSubmitEditing={Keyboard.dismiss}
+//       />
+//       <Text style={style.status}>{keyboardStatus}</Text>
+//     </View>
+//   );
+// }
+
+// const style = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     padding: 36
+//   },
+//   input: {
+//     padding: 10,
+//     borderWidth: 1.0,
+//     borderRadius: 10  
+//   },
+//   status: {
+//     padding: 10,
+//     textAlign: "center"
+//   }
+// });
+
+// export default App;
+
+
+/******************************************************************************************/
+// import React, { Component } from 'react';
+// import { View,StyleSheet,Text,Alert,Button } from 'react-native';
+// import * as DocumentPicker from 'expo-document-picker';
+
+// export default class MyDocPicker extends Component{
+  
+//   state=[
+//     myName='',
+//   ];
+
+//   pickDocument=async()=>{
+//     let result=await DocumentPicker.getDocumentAsync({});
+//     Alert.alert(result.uri);
+//     console.log(result);
+//     this.setState(()=>this.state.myName=result.name);
+//   };
+
+//   render(){
+//     return(
+//       <View style={styles.mycontainer}>
+//         <View>
+//           <Text>{this.state.myName}</Text>
+//         </View>
+//         <Button title='請選擇文件' onPress={this.pickDocument}></Button>
+//       </View>
+//     );
+//   }
+
+// }
+// const styles = StyleSheet.create({
+//   mycontainer: {  
+//     flex: 1,  
+//     flexDirection:'row',
+//     alignItems:'center'
+// },  
+
+// myitem: {  
+//   padding: 10,  
+//   fontSize: 18,  
+//   height: 44,  
+// },
+// });
 
 /******************************************************************************************/
 // import React, { useState, useEffect,Component } from 'react';

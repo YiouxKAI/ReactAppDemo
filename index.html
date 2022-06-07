@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    input{
+        display: block;
+    }
+</style>
+<body>
+    <div>
+        <input type="text" placeholder="Please Enter Product No" id="no">
+        <input type="text" placeholder="Please Enter Product Name" id="name">
+        <input type="number" placeholder="Please Enter Product Price" id="price">
+        <input type="number" placeholder="Please Enter Product Category" id="category">
+        <button id="btnSubmit">Set Data</button>
+        <div id="msg"></div>
+    </div>
+
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        //匯入函數 以CDN方式引用firebase sdk
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
+        import { getFirestore,setDoc,doc } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
+
+
+        /* npm 可能有點危險
+
+        --install firebase
+        npm install firebase
+        --import
+        import { initializeApp } from "firebase/app";
+        import { getFirestore,setDoc,doc } from "firebase/firestore";
+
+        */
+
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        //Web應用程式組態設定
+        const firebaseConfig = {
+          apiKey: "AIzaSyA0oOu9ifinGY1PPO7yMGJWG_z_qoY-Zqk",
+          authDomain: "myapp-809a5.firebaseapp.com",
+          projectId: "myapp-809a5",
+          storageBucket: "myapp-809a5.appspot.com",
+          messagingSenderId: "487490823586",
+          appId: "1:487490823586:web:0c883ed92dcd1498c67efb"
+        };
+      
+        // Initialize Firebase
+        //應用程式初始化
+        const app = initializeApp(firebaseConfig);
+
+        //實體資料庫物件
+        const db=getFirestore(app);
+
+        
+        const no=document.getElementById('no');
+        const name=document.getElementById('name');
+        const price=document.getElementById('price');
+        const category=document.getElementById('category');
+        const btnSubmit=document.getElementById('btnSubmit');
+
+        btnSubmit.onclick=()=>{setData()};
+
+        const setData= async()=>{
+            await setDoc(doc(db,'Product',no.value),{
+                name:name.value,
+                price:Number(price.value),
+                category:category.value*1,
+            }).then(()=>{
+                msg.innerHTML=no.value+"產品資料寫入成功";
+                no.value='';
+                name.value='';
+                price.value='';
+                category.value='';
+            })
+        }
+
+        /*
+            async  function setData(){} 原始寫法
+            btnSubmit.onclick=function(){};
+            const setData= async()=>{} Arrow Function寫法
+            btnSubmit.onclick=()=>{};
+        */
+
+
+      </script>
+
+
+
+</body>
+</html>
