@@ -1,23 +1,77 @@
+/*0609-Navigation */
 import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { View,Text,Button,StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 
-export default function App() {
-  return (
-    <WebView 
-      style={styles.container}
-      source={{ uri: 'https://expo.dev' }}
-    />
-  );
+//navigation 為prop,用來連結到其他的螢幕
+const HomeScreen=({navigation})=>{
+  return(
+    <View style={styles.container}>
+      <Text>Welcome to Taiwan Fruit Stand</Text>
+      <Button title='Home' onPress={()=>navigation.navigate('Home')}></Button>
+      <Button title='多吃水果' onPress={()=>navigation.navigate('Fruit')}></Button>
+      <Button title='當季水果' onPress={()=>navigation.navigate('Season')}></Button>
+      <Button title='訂購水果' onPress={()=>navigation.navigate('Order')}></Button>
+    </View>
+  )
+}
+//當季水果
+const SeasonScreen=({navigation})=>{
+  return(
+    <View style={styles.container}>
+      <Text>當季水果</Text>
+      <Button title='多吃水果' onPress={()=>navigation.navigate('Fruit')}></Button>
+      <Button title='訂購水果' onPress={()=>navigation.navigate('Order')}></Button>
+      <Button title='Home' onPress={()=>navigation.navigate('Home')}></Button>
+    </View>
+  )
 }
 
+const FruitScreen=({navigation})=>{
+  return(
+    <View style={styles.container}>
+      <Text>多吃水果</Text>
+      <Button title='當季水果' onPress={()=>navigation.navigate('Season')}></Button>
+      <Button title='訂購水果' onPress={()=>navigation.navigate('Order')}></Button>
+      <Button title='Home' onPress={()=>navigation.navigate('Home')}></Button>
+    </View>
+  )
+}
+
+const OrderScreen=()=>{
+  return(
+    <WebView 
+    style={styles.container}
+    source={{ uri: 'https://myapp-809a5.web.app/' }}></WebView>
+  )
+}
+
+const MyStack=createNativeStackNavigator(); //建立Native Stack實體
+
+const App = () => {
+  return (
+    <NavigationContainer>
+      <MyStack.Navigator initialRouteName='Home'>
+      <MyStack.Screen name='Home' component={HomeScreen}></MyStack.Screen>
+        <MyStack.Screen name='Fruit' component={FruitScreen}></MyStack.Screen>
+        <MyStack.Screen name='Season' component={SeasonScreen}></MyStack.Screen>
+        <MyStack.Screen name='Order' component={OrderScreen}></MyStack.Screen>
+      </MyStack.Navigator>
+    </NavigationContainer>
+  );
+};
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: Constants.statusBarHeight,
-  },
-});
+    container: {
+      flex: 1,
+      marginTop: Constants.statusBarHeight,
+    },
+  });
+
+export default App;
 
 /******************************************************************************************/
 /*0607-WebView */
@@ -31,7 +85,7 @@ const styles = StyleSheet.create({
 //   return (
 //     <WebView 
 //       style={styles.container}
-//       source={{ uri: 'https://expo.dev' }}
+//       source={{ uri: 'https://myapp-809a5.web.app/' }}
 //     />
 //   );
 // }
