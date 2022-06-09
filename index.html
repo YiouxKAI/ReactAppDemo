@@ -18,7 +18,13 @@
         <input type="number" placeholder="Please Enter Product Price" id="price">
         <input type="number" placeholder="Please Enter Product Category" id="category">
         <button id="btnSubmit">Set Data</button>
+        <button id="btnGet">Get Data</button>
+        <button id="btnDel">Delete Data</button>
+        <button id="btnUpdate">Update Data</button>
+
         <div id="msg"></div>
+        <div id="msg2"></div>
+        <div id="msg3"></div>
     </div>
 
 
@@ -26,7 +32,7 @@
         // Import the functions you need from the SDKs you need
         //匯入函數 以CDN方式引用firebase sdk
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
-        import { getFirestore,setDoc,doc } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
+        import { getFirestore,setDoc,doc,getDocs,collection,onSnapshot,query,deleteDoc,updateDoc } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js";
 
 
         /* npm 可能有點危險
@@ -67,8 +73,14 @@
         const category=document.getElementById('category');
         const btnSubmit=document.getElementById('btnSubmit');
 
-        btnSubmit.onclick=()=>{setData()};
+        
+        btnSubmit.onclick=()=>{setData()};//設定新增資料
+        btnGet.onclick=()=>{getData()}; //讀取資料
+        getDataListen();//監聽資料
+        btnDel.onclick=()=>{delData()};//刪除文件
+        btnUpdate.onclick=()=>{updateData()};//更新資料
 
+        //設定(新增)資料，若文件已存在，則更新，若不存在，則新增
         const setData= async()=>{
             await setDoc(doc(db,'Product',no.value),{
                 name:name.value,
@@ -83,6 +95,20 @@
             })
         }
 
+        //讀取資料
+        async function getData(){
+            msg2.innerHTML='';
+            const querySnapShot=await getDocs(collection(db,'Product')); //查詢結果物件
+            //console.log(querySnapShot);
+            querySnapShot.forEach((doc)=>{
+                msg2.innerHTML  += doc.id+"<br>"
+                                +doc.data()["name"]+"<br>"
+                                +doc.data()["price"]+"<br>"
+                                +doc.data()["category"]+"<br>"
+                                +"<hr>"
+            })
+        }
+
         /*
             async  function setData(){} 原始寫法
             btnSubmit.onclick=function(){};
@@ -90,6 +116,55 @@
             btnSubmit.onclick=()=>{};
         */
 
+        //監聽資料
+        function getDataListen(){
+            const q=query(collection(db,'Product'));
+            const myListen=onSnapshot(q,(querySnapShot)=>{
+                msg3.innerHTML='';
+                querySnapShot.forEach((doc)=>{
+                msg3.innerHTML  += doc.id+"<br>"
+                                +doc.data()["name"]+"<br>"
+                                +doc.data()["price"]+"<br>"
+                                +doc.data()["category"]+"<br>"
+                                +"<hr>"
+                })
+            })
+        }
+
+        //CRUD  Create,Read,Update,Delete
+        //刪除資料(文件)
+        async function delData(){
+            await deleteDoc(doc(db,'Product',no.value))
+            .then(()=>{
+                alert(no.value+'已刪除');
+                no.value='';
+            })
+        }
+        /* Delete 作法2
+        async function delData(value){
+            await deleteDoc(doc(db,'Product',value))
+            .then(()=>{
+                alert(value+'已刪除');
+                no.value='';
+            })
+        }
+        */
+
+        //更新資料(文件)
+        const updateData= async()=>{
+            const myUpdate=doc(db,'Product',no.value);
+            await updateDoc(myUpdate,{
+                name:name.value,
+                price:Number(price.value),
+                category:category.value*1
+            }).then(()=>{
+                alert(no.value+'已更新');
+                no.value='';
+                no.name='';
+                no.price='';
+                no.category='';
+            })
+        }
 
       </script>
 
