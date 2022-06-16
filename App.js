@@ -1,138 +1,186 @@
-/*0614-Navigation */
-
-import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { View,Text,Button,StyleSheet,Image } from 'react-native';
-import { WebView } from 'react-native-webview';
+/*0616-facebook login */
+import * as Facebook from 'expo-facebook';
+import { View,Text,Button,StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
-import os from './OtherScreen.js';
 
-const HomeTitle=()=>{
-  return(
-    <Image source={require('./assets/fruit2/1.jpg')} style={{width:50,height:50}}></Image>
-  )
-}
+const App=()=>{
 
-//navigation 為prop,用來連結到其他的螢幕
-const HomeScreen=({navigation})=>{
+    async function logIn() {
+    try {
+      await Facebook.initializeAsync({
+        appId: '314186384263927',
+      });
+      const { type, token, expirationDate, permissions, declinedPermissions } =
+        await Facebook.logInWithReadPermissionsAsync({
+          permissions: ['public_profile'],
+        });
+      if (type === 'success') {
+        // Get the user's name using Facebook's Graph API
+        const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
+        Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+      } else {
+        // type === 'cancel'
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
+    }
+  }
   return(
     <View style={styles.container}>
-      <Text>Welcome to Taiwan Fruit Stand</Text>
-      <Button title='Home' onPress={()=>navigation.navigate('Home')}></Button>
-      <Button title='多吃水果' onPress={()=>navigation.navigate('Fruit')}></Button>
-      <Button title='當季水果' onPress={()=>navigation.navigate('Season')}></Button>
-      <Button title='訂購水果' onPress={()=>navigation.navigate('Order')}></Button>
-      <Button title='水果資訊' onPress={()=>navigation.navigate('Info',{id:1,name:'Apple',price:100})}></Button>
+      <Button title='Facebook Login' onPress={logIn}></Button>
     </View>
   )
 }
-
-/* Note
- * navigation.navigation vs navigation.push
- * 假設我們需要
- * 1.導航到某個客戶的資料
- * 2.查看該客戶的消費狀況
- * 3.再導航回到他的個人資料
- * 
- * Navigation 情況
- * 2.查看該客戶的消費狀況
- * 3.再導航回到他的個人資料(原本舊的資料)
- * 
- * Push 情況
- * 2.查看該客戶的消費狀況
- * 3.再導航回到他的個人資料(將新的Screen推送到新的Stack)
- */
-
-
-//當季水果
-const SeasonScreen=({navigation})=>{
-  return(
-    <View style={styles.container}>
-      <Text>當季水果</Text>
-      <Button title='多吃水果' onPress={()=>navigation.push('Fruit')}></Button>
-      <Button title='訂購水果' onPress={()=>navigation.push('Order')}></Button>
-      <Button title='Home' onPress={()=>navigation.push('Home')}></Button>
-    </View>
-  )
-}
-
-const FruitScreen=({navigation})=>{
-  return(
-    <View style={styles.container}>
-      <Text>多吃水果</Text>
-      <Button title='當季水果' onPress={()=>navigation.push('Season')}></Button>
-      <Button title='訂購水果' onPress={()=>navigation.push('Order')}></Button>
-      <Button title='水果列表' onPress={()=>navigation.push('Show')}></Button>
-      <Button title='Home' onPress={()=>navigation.push('Home')}></Button>
-    </View>
-  )
-}
-
-const OrderScreen=()=>{
-  return(
-    <WebView 
-    style={styles.container}
-    source={{ uri: 'https://myapp-809a5.web.app/' }}></WebView>
-  )
-}
-
-//傳送參數方式
-//水果資訊Screen
-const InfoScreen=({route,navigation})=>{
-  const {id}=route.params;
-  const {name}=route.params;
-  const {price}=route.params;
-
-  /* json.stringify()
-   * https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
-   *
-   *navigation.goBack() 回到上一個Screen
-   */
-
-
-  return(
-    <View style={styles.container}>
-      <Text>水果資訊</Text>
-      <Text>id:{JSON.stringify(id)}</Text>
-      <Text>name:{JSON.stringify(name)}</Text>
-      <Text>price:{JSON.stringify(price)}</Text>
-
-      <Button title='當季水果' onPress={()=>navigation.push('Season')}></Button>
-      <Button title='訂購水果' onPress={()=>navigation.push('Order')}></Button>
-      <Button title='水果列表' onPress={()=>navigation.push('Show')}></Button>
-      <Button title='Home' onPress={()=>navigation.push('Home')}></Button>
-      <Button title='GO BACK' onPress={()=>navigation.goBack()}></Button>
-      <Button title='抽獎折扣' onPress={()=>navigation.push('Info',{price:price -price*Math.floor(Math.random()*10)})}></Button>
-    </View>
-  )
-}
-
-const MyStack=createNativeStackNavigator(); //建立Native Stack實體
-
-const App = () => {
-  return (
-    <NavigationContainer>
-      <MyStack.Navigator initialRouteName='Home'>
-      <MyStack.Screen name='Home' component={HomeScreen} options={({headerRight:(props)=><HomeTitle />})}></MyStack.Screen>
-        <MyStack.Screen name='Fruit' component={FruitScreen}></MyStack.Screen>
-        <MyStack.Screen name='Season' component={SeasonScreen}></MyStack.Screen>
-        <MyStack.Screen name='Order' component={OrderScreen}></MyStack.Screen>
-        <MyStack.Screen name='Show' component={os.ShowFruitImage}></MyStack.Screen>
-        <MyStack.Screen name='Info' component={InfoScreen}></MyStack.Screen>
-      </MyStack.Navigator>
-    </NavigationContainer>
-  );
-};
 
 const styles = StyleSheet.create({
     container: {
       flex: 1,
       marginTop: Constants.statusBarHeight,
+      justifyContent:'center'
     },
   });
 
 export default App;
+
+
+
+
+/******************************************************************************************/
+/*0614-Navigation */
+
+// import * as React from 'react';
+// import { NavigationContainer } from '@react-navigation/native';
+// import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// import { View,Text,Button,StyleSheet,Image } from 'react-native';
+// import { WebView } from 'react-native-webview';
+// import Constants from 'expo-constants';
+// import os from './OtherScreen.js';
+
+// const HomeTitle=()=>{
+//   return(
+//     <Image source={require('./assets/fruit2/1.jpg')} style={{width:50,height:50}}></Image>
+//   )
+// }
+
+// //navigation 為prop,用來連結到其他的螢幕
+// const HomeScreen=({navigation})=>{
+//   return(
+//     <View style={styles.container}>
+//       <Text>Welcome to Taiwan Fruit Stand</Text>
+//       <Button title='Home' onPress={()=>navigation.navigate('Home')}></Button>
+//       <Button title='多吃水果' onPress={()=>navigation.navigate('Fruit')}></Button>
+//       <Button title='當季水果' onPress={()=>navigation.navigate('Season')}></Button>
+//       <Button title='訂購水果' onPress={()=>navigation.navigate('Order')}></Button>
+//       <Button title='水果資訊' onPress={()=>navigation.navigate('Info',{id:1,name:'Apple',price:100})}></Button>
+//     </View>
+//   )
+// }
+
+// /* Note
+//  * navigation.navigation vs navigation.push
+//  * 假設我們需要
+//  * 1.導航到某個客戶的資料
+//  * 2.查看該客戶的消費狀況
+//  * 3.再導航回到他的個人資料
+//  * 
+//  * Navigation 情況
+//  * 2.查看該客戶的消費狀況
+//  * 3.再導航回到他的個人資料(原本舊的資料)
+//  * 
+//  * Push 情況
+//  * 2.查看該客戶的消費狀況
+//  * 3.再導航回到他的個人資料(將新的Screen推送到新的Stack)
+//  */
+
+
+// //當季水果
+// const SeasonScreen=({navigation})=>{
+//   return(
+//     <View style={styles.container}>
+//       <Text>當季水果</Text>
+//       <Button title='多吃水果' onPress={()=>navigation.push('Fruit')}></Button>
+//       <Button title='訂購水果' onPress={()=>navigation.push('Order')}></Button>
+//       <Button title='Home' onPress={()=>navigation.push('Home')}></Button>
+//     </View>
+//   )
+// }
+
+// const FruitScreen=({navigation})=>{
+//   return(
+//     <View style={styles.container}>
+//       <Text>多吃水果</Text>
+//       <Button title='當季水果' onPress={()=>navigation.push('Season')}></Button>
+//       <Button title='訂購水果' onPress={()=>navigation.push('Order')}></Button>
+//       <Button title='水果列表' onPress={()=>navigation.push('Show')}></Button>
+//       <Button title='Home' onPress={()=>navigation.push('Home')}></Button>
+//     </View>
+//   )
+// }
+
+// const OrderScreen=()=>{
+//   return(
+//     <WebView 
+//     style={styles.container}
+//     source={{ uri: 'https://myapp-809a5.web.app/' }}></WebView>
+//   )
+// }
+
+// //傳送參數方式
+// //水果資訊Screen
+// const InfoScreen=({route,navigation})=>{
+//   const {id}=route.params;
+//   const {name}=route.params;
+//   const {price}=route.params;
+
+//   /* json.stringify()
+//    * https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
+//    *
+//    *navigation.goBack() 回到上一個Screen
+//    */
+
+
+//   return(
+//     <View style={styles.container}>
+//       <Text>水果資訊</Text>
+//       <Text>id:{JSON.stringify(id)}</Text>
+//       <Text>name:{JSON.stringify(name)}</Text>
+//       <Text>price:{JSON.stringify(price)}</Text>
+
+//       <Button title='當季水果' onPress={()=>navigation.push('Season')}></Button>
+//       <Button title='訂購水果' onPress={()=>navigation.push('Order')}></Button>
+//       <Button title='水果列表' onPress={()=>navigation.push('Show')}></Button>
+//       <Button title='Home' onPress={()=>navigation.push('Home')}></Button>
+//       <Button title='GO BACK' onPress={()=>navigation.goBack()}></Button>
+//       <Button title='抽獎折扣' onPress={()=>navigation.push('Info',{price:price -price*Math.floor(Math.random()*10)})}></Button>
+//     </View>
+//   )
+// }
+
+// const MyStack=createNativeStackNavigator(); //建立Native Stack實體
+
+// const App = () => {
+//   return (
+//     <NavigationContainer>
+//       <MyStack.Navigator initialRouteName='Home'>
+//       <MyStack.Screen name='Home' component={HomeScreen} options={({headerRight:(props)=><HomeTitle />})}></MyStack.Screen>
+//         <MyStack.Screen name='Fruit' component={FruitScreen}></MyStack.Screen>
+//         <MyStack.Screen name='Season' component={SeasonScreen}></MyStack.Screen>
+//         <MyStack.Screen name='Order' component={OrderScreen}></MyStack.Screen>
+//         <MyStack.Screen name='Show' component={os.ShowFruitImage}></MyStack.Screen>
+//         <MyStack.Screen name='Info' component={InfoScreen}></MyStack.Screen>
+//       </MyStack.Navigator>
+//     </NavigationContainer>
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//     container: {
+//       flex: 1,
+//       marginTop: Constants.statusBarHeight,
+//     },
+//   });
+
+// export default App;
 
 /******************************************************************************************/
 
