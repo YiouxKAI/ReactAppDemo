@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+
+<body>
+    <script>
+        //const let var
+        var name="安安你好";
+        var chi=100;
+        var eng=95;
+        var math=94;
+        var total=chi+eng+math;
+        var avg=(total/3).toFixed(2);
+        
+        var isPass=false;
+
+        document.write("姓名:"+name+"<br>");
+        document.write("國文:"+chi+"<br>");
+        document.write("英文:"+eng+"<br>");
+        document.write("數學:"+math+"<br>");
+        document.write("總分:"+total+"<br>");
+        if(avg>=60){
+            isPass=true;
+        }else{
+            isPass=false;
+        }
+        document.write("平均:"+avg+"<br>");
+        document.write("是否及格:"+isPass+"<br>");
+
+    </script>
+</body>
+</html>

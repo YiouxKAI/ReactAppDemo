@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<head>
+
+</head>
+
+<body>
+    <div id="demo"></div>
+    <div id="demo2"></div>
+    <div id="demo3"></div>
+    <div id="demo4"></div>
+
+    <script>
+        const d1=document.getElementById('demo');
+        const d2=document.getElementById('demo2');
+        const d3=document.getElementById('demo3');
+        const d4=document.getElementById('demo4');
+
+        //具名函數
+        function test(){}
+
+
+        //匿名函數
+        var fruit=function(r){
+            var favorite=new Array('芒果','芭樂','荔枝','蘋果','梨子');
+            return favorite[r];
+        }
+
+        var r=Math.floor(Math.random()*5);
+        d1.innerHTML="我最喜歡的水果是:"+fruit(r);
+        
+
+        var r2=Math.floor(Math.random()*5);
+        //即時函數        
+        (function(r){
+            var favorite=new Array('芒果','芭樂','荔枝','蘋果','梨子');
+            d2.innerHTML="我想吃的水果是:"+favorite[r];
+        })(r2);
+
+        (function(){
+            d3.innerHTML="Welcome to Taiwan!";
+        })(); //()不可省略
+
+
+        var str='';
+        //一般函數，無參數，無回傳值
+        function myExampleNormal(){
+            str+='一般函數，無參數，無回傳值<br>';
+            d4.innerHTML=str;
+        }
+
+        myExampleNormal();
+
+        //箭頭(Arrow)函數，無參數，無回傳值，ES6
+        const myExampleArrow=()=>{
+            str+='箭頭(Arrow)函數，無參數，無回傳值，ES6<br>';
+            d4.innerHTML=str;
+        }
+
+        myExampleArrow();
+
+        //一般函數，無參數，有回傳值
+        function myExampleNormalWithReturn(){
+            str+='一般函數，無參數，有回傳值<br>';
+            return str;
+        }
+
+        d4.innerHTML=myExampleNormalWithReturn();
+
+        //箭頭(Arrow)函數，無參數，有回傳值，ES6
+        const myExampleArrowWithReturn=()=>str+='箭頭(Arrow)函數，無參數，有回傳值，ES6<br>'
+
+        d4.innerHTML=myExampleArrowWithReturn();
+
+        //箭頭(Arrow)函數，有參數，有回傳值，ES6，雙參數
+        const myfruit=(price,qty)=>str+='箭頭(Arrow)函數，有參數，有回傳值，ES6，水果:梨子，價格共 '+(price*qty)+' 元<br>';
+
+        d4.innerHTML=myfruit(50,5);
+
+        //箭頭(Arrow)函數，有參數，有回傳值，ES6，單參數
+        const myfruit2=(qty)=>str+='箭頭(Arrow)函數，有參數，有回傳值，ES6，水果:梨子，共 '+(qty)+' 顆<br>';
+
+        d4.innerHTML=myfruit2(5);
+
+        const myfruit3=qty=>str+='箭頭(Arrow)函數，有參數，有回傳值，ES6，水果:梨子，共 '+qty+' 顆<br>';
+
+        d4.innerHTML=myfruit3(5); //兩種寫法皆可
+
+
+    </script>
+
+</body>
+</html>
